@@ -1,0 +1,664 @@
+<html>
+<head>
+<script type="text/javascript" src="lib/require.js" data-main="main"></script>
+    <script src="./plugins/jq.js"></script>
+    <script src="./plugins/jquery.backgroundpos.package-1.1.1/jquery.backgroundpos.min.js"></script>
+    <script src="./plugins/jquery.growl/javascripts/jquery.growl.js"></script>
+    <link href="./plugins/jquery.growl/stylesheets/jquery.growl.css" rel="stylesheet" type="text/css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenMax.min.js"></script>
+    <script type="text/javascript" src="./plugins/yckart-jquery.overlaps.js-1ac2b5b/jquery.overlaps.js"></script>
+    <style type="text/css">
+        .grass {
+            background-image: url("./standard_tileset.png");
+            float: left;
+            margin-left: 0px;
+            margin-top: 0px;
+            background-position: -6px 704px;
+        }
+        .ash {
+            width: 25px;
+            height: 29px;
+            background-image: url("./sheets/ash-sprite.gif");
+            background-position: -8px -7px;
+            position: absolute;
+        }
+    </style>
+<script>
+    /* libCube engine written by Bradley Duncan */
+
+    var libCube = libCube || {};
+    var tileSize = 25;
+
+    var cameraWidth = 800;
+    var cameraHeight = 400;
+
+    var movementSpeed = 0.19; //smaller the number, faster the movement. Default = 0.19
+
+    //global declarations
+
+    //animation stacks
+    var walkup;
+    var walkdown;
+    var walkleft;
+    var walkright;
+
+    var walkupBUF;
+    var walkdownBUF;
+    var walkleftBUF;
+    var walkrightBUF;
+
+    var walkupAnimationState = true;
+    var walkdownAnimationState = true;
+    var walkleftAnimationState = true;
+    var walkrightAnimationState = true;
+
+    //dynamically set
+    var travelAnimationSpeed; //ms per frame
+    var keyPress;
+    var allowedMovement = true;
+    var walkingDirection = "none";
+    var is3d;
+    var can3dswitch = true;
+    var usingGamepad;
+
+    //browser hooks
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+
+    //global declarations
+
+    //todos
+    // TODO: Collisions
+    // TODO: Interactable Objects
+    // TODO: Comversation dialog
+    // TODO: Start Menu
+
+    libCube.world = {
+
+        drawMap: function(X,Y,mapFile) {
+            $("#camera").append("<div id='map' style='font-size: 0; width: " + X + "px; height: " + Y + "px; background-color: red;" +
+            "-webkit-transform-style: preserve-3d;" +
+            "-moz-transform-style: preserve-3d;" +
+            "transform-style: preserve-3d;" +
+            "-webkit-transform: translateX(0px) translateY(0px);" +
+            "-moz-transform: translateX(0px) translateY(0px);" +
+            "transform: translateX(0px) translateY(0px);'></div>");
+
+            var widthCount = (X / tileSize);
+            var heightCount = (Y / tileSize);
+
+            var tileBuffer = 0;
+        },
+        spawnStarCharacter: function(skin, cameraWidth, cameraHeight) {
+            switch(skin) {
+                case "ash":
+                        travelAnimationSpeed = 300;
+                    $("#camera").prepend("<div id='starCharacter' class='ash' style='" +
+                    "                    left: 50%;" +
+                    "                    top: 50%;" +
+                    "                    transform: translateX(-50%) translateY(-50%);" +
+                    "                    z-index: 2'></div>");
+                break;
+                default:
+                    console.error("libCube\nRESOURCE NOT FOUND: libCube.world.spawnStarCharacter:" + skin + "");
+            }
+        }
+    }
+
+    libCube.camera = {
+        create: function(X, Y) {
+                    $("body").append("<div id='camera' style='width: " + X + "px; height: " + Y + "px; margin-left: -8px; margin-top: -8px;'></div>"); //apply overflow hidden for closed camera
+        },
+        call3d: function(perspective, rotateX, rotateY, rotateZ, translateX, translateY, translateZ) {
+
+            $("#camera").css("overflow","visible");
+            $("#camera").css("-webkit-transform-style","preserve-3d");
+            $("#camera").css("-moz-transform-style","preserve-3d");
+            $("#camera").css("transform-style","preserve-3d");
+
+            if (perspective != 0 && rotateX != 0) {
+                $("#starCharacter").css('-webkit-transform', 'rotateX(-' + rotateX + 'deg) translateZ(1em) translateX(-50%) translateY(-50%)');
+                $("#starCharacter").css('-moz-transform', 'rotateX(-' + rotateX + 'deg) translateZ(1em) translateX(-50%) translateY(-50%)');
+                $("#starCharacter").css('transform', 'rotateX(-' + rotateX + 'deg) translateZ(1em) translateX(-50%) translateY(-50%)');
+
+                $(".dynamicObject").each(function() {
+                    $(this).css('-webkit-transform','rotateX(-' + rotateX + 'deg) translateZ(' + ($(this).height()/2) + 'px) translateY(-' + (($(this).height()/2)/2) + 'px)');
+                    $(this).css('-moz-transform','rotateX(-' + rotateX + 'deg) translateZ(' + ($(this).height()/2) + 'px) translateY(-' + (($(this).height()/2)/2) + 'px)');
+                    $(this).css('transform','rotateX(-' + rotateX + 'deg) translateZ(' + ($(this).height()/2) + 'px) translateY(-' + (($(this).height()/2)/2) + 'px)');
+                });
+
+                            if (!isFirefox) {
+                                $("#camera").css('-webkit-transform', 'perspective(' + perspective + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                                $("#camera").css('-moz-transform', 'perspective(' + perspective + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                                $("#camera").css('transform', 'perspective(' + perspective + 'px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                            } else {
+                                $("#camera").css('-webkit-transform', 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                                $("#camera").css('-moz-transform', 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                                $("#camera").css('transform', 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg) translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px)');
+                            }
+            } else {
+                $("#camera").css("overflow","hidden");
+                $("#camera").css("-webkit-transform-style","flat");
+                $("#camera").css("-moz-transform-style","flat");
+                $("#camera").css("transform-style","flat");
+
+                $("#camera").css('-webkit-transform', 'none');
+                $("#camera").css('-moz-transform', 'none');
+                $("#camera").css('transform', 'none');
+                $("#camera").css('margin-left', '-8px');
+                $("#camera").css('margin-top', '-8px');
+
+                $("#starCharacter").css('-webkit-transform', 'translateX(-50%) translateY(-50%)');
+                $("#starCharacter").css('-moz-transform', 'translateX(-50%) translateY(-50%)');
+                $("#starCharacter").css('transform', 'translateX(-50%) translateY(-50%)');
+
+                $(".dynamicObject").each(function() {
+                    $(this).css('-webkit-transform','none');
+                    $(this).css('-moz-transform','none');
+                    $(this).css('transform','none');
+                });
+            }
+
+            /*
+             //Star character
+             "-webkit-transform: rotateX(-70deg) translateZ(2em); " +
+             "-moz-transform: rotateX(-70deg) translateZ(2em);" +
+             "transform: rotateX(-70deg) translateZ(2em);
+            */
+
+            /*
+            //convert camera
+             " +
+             "-webkit-transform-style: preserve-3d; " +
+             "-webkit-transform: perspective(600px) rotateX(80deg) rotateZ(50deg) translateZ(0); " +
+             "-moz-transform-style: preserve-3d; " +
+             "-moz-transform: perspective(600px) rotateX(80deg) rotateZ(50deg) translateZ(0);" +
+             "transform-style: preserve-3d;" +
+             "transform: perspective(600px) rotateX(74deg) rotateY(-4deg) rotateZ(1deg) translateZ(4em)
+             */
+        },
+        curX: function() {
+            //var X = parseInt($("#map").css("marginLeft").replace("px",""));
+
+            var obj = $('#map');
+            var transformMatrix = obj.css("-webkit-transform") ||
+                    obj.css("-moz-transform")    ||
+                    obj.css("-ms-transform")     ||
+                    obj.css("-o-transform")      ||
+                    obj.css("transform");
+            var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
+            var X = matrix[12] || matrix[4];
+
+            return parseInt(X);
+        },
+        curY: function() {
+            //var Y = parseInt($("#map").css("marginTop").replace("px",""));
+
+            var obj = $('#map');
+            var transformMatrix = obj.css("-webkit-transform") ||
+                    obj.css("-moz-transform")    ||
+                    obj.css("-ms-transform")     ||
+                    obj.css("-o-transform")      ||
+                    obj.css("transform");
+            var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
+            var Y = matrix[13] || matrix[5];
+
+            return parseInt(Y);
+        }
+    }
+
+    libCube.player = {
+        skin: function() {
+            return $('#starCharacter').attr("class");
+        }
+    }
+
+    libCube.walkAnimation = {
+        up: function(i) {
+            if (allowedMovement && walkingDirection == "up") {
+                ////console.log("ANI UP");
+                switch (libCube.player.skin()) {
+                    case "ash":
+                        $(".ash").animate({backgroundPosition: '-=32px +=0px'}, 1, "linear", function () {
+                            if (i < 1) {
+                                i++;
+                                walkup = setTimeout(function () {
+                                    libCube.walkAnimation.up(i);
+                                }, travelAnimationSpeed);
+                            } else {
+                                $(".ash").css("background-position", "-39px -8px");
+                                walkup = setTimeout(function () {
+                                    libCube.walkAnimation.up(0);
+                                }, travelAnimationSpeed);
+                            }
+                        });
+                    break;
+                }
+            }
+        }, //parameter not required
+        down: function(i) {
+            if (allowedMovement && walkingDirection == "down") {
+                ////console.log("ANI DOWN: " + walkdownAnimationState);
+                if (walkdownAnimationState) {
+                        walkdownAnimationState = false;
+                        switch (libCube.player.skin()) {
+                            case "ash":
+                                /*
+                            $(".ash").animate({backgroundPosition: '-=32px +=0px'}, 1, "linear", function () {
+                                if (i < 1) {
+                                    i++;
+                                    walkdown = setTimeout(function () {
+                                        libCube.walkAnimation.down(i);
+                                    }, travelAnimationSpeed);
+                                } else {
+                                    $(".ash").css("background-position", "-39px -41px");
+                                    walkdown = setTimeout(function () {
+                                        libCube.walkAnimation.down(0);
+                                    }, travelAnimationSpeed);
+                                }
+                            });*/
+
+
+
+                                var TL = new TimelineMax({repeat: -1, repeatDelay:-1});
+                                TL.to(".ash", 0.9,{backgroundPosition:"-1000px 0", ease:SteppedEase.config(3)});
+                                TL.set(".ash", {backgroundPosition:"0 0"});
+                                TL.to(".ash", 0.9,{backgroundPosition:"-1000px 0", ease:SteppedEase.config(3)});
+
+
+
+                                break;
+                    }
+                }
+            }
+        }, //parameter not required
+        left: function(i) {
+            if (allowedMovement && walkingDirection == "left") {
+                ////console.log("ANI LEFT");
+                switch (libCube.player.skin()) {
+                    case "ash":
+                        $(".ash").animate({backgroundPosition: '-=32px +=0px'}, 1, "linear", function () {
+                            if (i == 0) {
+                                ////console.log("stage1");
+                                i++;
+                                walkleft = setTimeout(function () {
+                                    libCube.walkAnimation.left(i);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            } else if (i == 1) {
+                                ////console.log("stage2");
+                                i++;
+                                $(".ash").css("background-position", "-39px -73px"); //moonwalk $(".ash").css("background-position", "-7px -73px");
+                                walkleft = setTimeout(function () {
+                                    libCube.walkAnimation.left(i);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            } else {
+                                ////console.log("stage3");
+                                $(".ash").css("background-position", "-7px -73px"); //moonwalk $(".ash").css("background-position", "-39px -73px");
+                                walkleft = setTimeout(function () {
+                                    libCube.walkAnimation.left(0);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            }
+                        });
+
+
+
+
+                        break;
+                }
+            }
+        }, //parameter not required
+        right: function(i) {
+            if (allowedMovement && walkingDirection == "right") {
+                ////console.log("ANI RIGHT");
+                switch (libCube.player.skin()) {
+                    case "ash":
+                        $(".ash").animate({backgroundPosition: '-=32px +=0px'}, 1, "linear", function () {
+                            if (i == 0) {
+                                i++;
+                                walkright = setTimeout(function () {
+                                    libCube.walkAnimation.right(i);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            } else if (i == 1) {
+                                $(".ash").css("background-position", "-39px -105px");
+                                walkright = setTimeout(function () {
+                                    libCube.walkAnimation.right(2);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            } else {
+                                $(".ash").css("background-position", "-7px -105px");
+                                walkright = setTimeout(function () {
+                                    libCube.walkAnimation.right(0);
+                                }, (travelAnimationSpeed-(travelAnimationSpeed/1.5)));
+                            }
+                        });
+                        break;
+                }
+            }
+        }, //parameter not required
+        stop: function() {
+
+                clearTimeout(walkup);
+                clearTimeout(walkdown);
+                clearTimeout(walkright);
+                clearTimeout(walkleft);
+            walkup = undefined;
+            walkdown = undefined;
+            walkleft = undefined;
+            walkright = undefined;
+
+            switch(libCube.player.skin()) {
+                case "ash":
+                        $(".ash").css("background-position","-7px " + $(".ash").css("background-position").split(" ")[1]);
+                break;
+            }
+
+            //////console.log(allowedMovement);
+
+            var jd = setTimeout(function() { allowedMovement = true; },100);
+        }
+    }
+
+    libCube.keyhook = {
+        keydown: function(i) {
+            //////console.log("DOWN: " + i.keyCode + " : " + keyPress);
+            if (keyPress == false) {
+                switch(i.keyCode) {
+                    case 87: //"w"
+                        walkingDirection = "up";
+                        break;
+                    case 65: //"a"
+                        walkingDirection = "left";
+                        break;
+                    case 68: //"d"
+                        walkingDirection = "right";
+                        break;
+                    case 83: //"s"
+                        walkingDirection = "down";
+                        break;
+                }
+                keyPress = true;
+            }
+        },
+        keyup: function(i) {
+            //////console.log("UP: " + i.keyCode);
+
+            if (keyPress == true) {
+                switch (i.keyCode) {
+                    case 87: //"w"
+                            walkingDirection = "none";
+                        break;
+                    case 65: //"a"
+                        walkingDirection = "none";
+                        break;
+                    case 68: //"d"
+                        walkingDirection = "none";
+                        break;
+                    case 83: //"s"
+                        walkingDirection = "none";
+                        break;
+                }
+            }
+            keyPress = false;
+        }
+    }
+
+//example of how to use the engine to initialise game components on the screen
+    $(document).ready(function() {
+
+        var mapX = (tileSize * 70);
+        var mapY = (tileSize * 70);
+
+        libCube.camera.create(cameraWidth,cameraHeight, 3);
+        libCube.world.drawMap(mapX,mapY,"Kanto.map"); // * the map file is not yet hooked correctly
+        //libCube.world.spawnStarCharacter("ash",cameraWidth,cameraHeight);
+
+        $('body').on("keydown", function(){ libCube.keyhook.keydown(event); });
+
+        $('body').on("keyup", function(){ libCube.keyhook.keyup(event); });
+
+        gameLoop(99);
+
+        window.addEventListener("gamepadconnected", function(e) {
+            console.info("libCube\nController [%d] Connected (%d buttons, %d axes)",
+                    e.gamepad.index, e.gamepad.buttons.length, e.gamepad.axes.length);
+            $.growl.notice({ title: "Controller Detected", message: "This controller can now be used..." });
+            usingGamepad = true;
+            clearTimeout(gamesLoop);
+            gameLoop(e.gamepad.index);
+        });
+
+        window.addEventListener("gamepaddisconnected", function(e) {
+            console.info("libCube\nController [%d] Disconnected",
+                    e.gamepad.index);
+            $.growl.error({ title: "Controller Disconnected", message: "Controller was disconnected..." });
+            usingGamepad = false;
+            clearTimeout(gamesLoop);
+            gameLoop(99);
+        });
+
+        var gamesLoop;
+        var player_moving;
+        var allowedToWalk = true;
+
+        function gameLoop(i) {
+            var gp = navigator.getGamepads()[i];
+
+            if (gp == undefined) {
+                gp = gp || {};
+                gp.buttons = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            } //define gp as null to prevent error
+
+            //COLLISION
+
+            // TODO: Create invisible collision detectors arround the character to detect in which direciton the collision is coming from
+            // TODO: splitting the collision checker into a 4 way function. Then allow movement in the direction providing there isn't
+            // TODO: a collision in that direction.
+            //
+            // TODO: Look at implementing pixel perfect collision from the link below:
+            // TODO: http://e-smartdev.com/en/#!jsPluginList/hittestJQuery
+            //
+            // TODO: This will stop collision with the invisible corners of some objects.
+            //
+            // TODO: This method above ^ might not be the best solution. After examination it's probably
+            // TODO: Best to have a flat collision layer and keep that in effect even in 3d mode. It seems
+            // TODO: That the collision positions from 2D look ok in 3d also.
+            //
+            //
+            // TODO: BUG: To stop the character floating when walking in a diagonal direction using gamepad or
+            // TODO: when keyboard commands are given in great speed, change the walkingDirection to an array
+            // TODO: push new directions to the array, then if it's detected that two directions are in the array
+            // TODO: stop the character movement until keyup.
+            //
+
+            //END COLLISION
+
+            var keyboardController;
+            if (!usingGamepad) {
+                if (walkingDirection != "none") {
+                    keyboardController = true;
+                }
+            } else {
+                keyboardController = false;
+            }
+
+            if (keyboardController || gp.buttons[12]['pressed'] || gp.buttons[14]['pressed'] || gp.buttons[15]['pressed'] || gp.buttons[13]['pressed']  || gp.buttons[17]['pressed']) {
+
+                var isCollidable = false;
+                if ($(".dynamicObject").overlaps($("#starCharacter"))["hits"].length > 0) {
+                    var collisionObj = $(".dynamicObject").overlaps($("#starCharacter"))["targets"][0]["id"];
+                    isCollidable = collisionObj.split("_");
+                    if (isCollidable[parseInt(isCollidable.length-1)] == "collide") {
+                        isCollidable = true;
+                        ////console.log($(".dynamicObject").overlaps($("#starCharacter"))["targets"][0]);
+                    } else {
+                        isCollidable = false;
+                    }
+                }
+
+
+                //debug
+                //////console.log("Collision Status" + isCollidable);
+
+                if (gp.buttons[12]['pressed'] || walkingDirection == "up") {
+                    if (!player_moving) {
+                        walkingDirection = "up";
+                        libCube.walkAnimation.up();
+                        player_moving = true;
+                    } else {
+                        if (allowedToWalk == true) {
+                            allowedToWalk = false;
+                            if (player_moving) {
+                                if (walkup == walkupBUF) {
+                                    libCube.walkAnimation.up();
+                                    walkupBUF = 0;
+                                }
+                                TweenLite.to("#map", movementSpeed, {
+                                    ease: Power0.easeNone,
+                                    css: {y: "+=" + 25},
+                                    onComplete: function () {
+                                        allowedToWalk = true;
+                                    }
+                                });
+                                ////console.log(walkup);
+                                walkupBUF = walkup;
+                                //////console.log("ANIMATING UP, wd = " + walkingDirection + " bufdir = " + bufDirection);
+                            }
+                        }
+                    }
+                }
+
+                if (gp.buttons[14]['pressed'] || walkingDirection == "left") {
+                    if (!player_moving) {
+                        walkingDirection = "left";
+                        libCube.walkAnimation.left();
+                        player_moving = true;
+                    } else {
+                        if (allowedToWalk == true) {
+                            allowedToWalk = false;
+                            if (player_moving) {
+                                if (walkleft == walkleftBUF) {
+                                    libCube.walkAnimation.left();
+                                    walkleftBUF = 0;
+                                }
+                                TweenLite.to("#map", movementSpeed, {
+                                    ease: Power0.easeNone,
+                                    css: {x: "+=" + 25},
+                                    onComplete: function () {
+                                        allowedToWalk = true;
+                                    }
+                                });
+                                ////console.log(walkleft);
+                                walkleftBUF = walkleft;
+                                //////console.log("ANIMATING LEFT, wd = " + walkingDirection + " bufdir = " + bufDirection);
+                            }
+                        }
+                    }
+                }
+
+                if (gp.buttons[15]['pressed'] || walkingDirection == "right") {
+                    if (!player_moving) {
+                        walkingDirection = "right";
+                        libCube.walkAnimation.right();
+                        player_moving = true;
+                    } else {
+                        if (allowedToWalk == true) {
+                            allowedToWalk = false;
+                            if (player_moving) {
+                                if (walkright == walkrightBUF) {
+                                    libCube.walkAnimation.right();
+                                    walkrightBUF = 0;
+                                }
+                                TweenLite.to("#map", movementSpeed, {
+                                    ease: Power0.easeNone,
+                                    css: {x: "-=" + 25},
+                                    onComplete: function () {
+                                        allowedToWalk = true;
+                                    }
+                                });
+                                ////console.log(walkright);
+                                walkrightBUF = walkright;
+                                //////console.log("ANIMATING RIGHT, wd = " + walkingDirection + " bufdir = " + bufDirection);
+                            }
+                        }
+                    }
+                }
+
+                if (gp.buttons[13]['pressed'] || walkingDirection == "down") {
+                    if (!player_moving) {
+                        walkingDirection = "down";
+                        libCube.walkAnimation.down();
+                        player_moving = true;
+                    } else {
+                        if (allowedToWalk == true) {
+                            allowedToWalk = false;
+                            if (player_moving) {
+                                if (walkdown == walkdownBUF) {
+                                    libCube.walkAnimation.down();
+                                    walkdownBUF = 0;
+                                }
+                                TweenLite.to("#map", movementSpeed, {
+                                    ease: Power0.easeNone,
+                                    css: {y: "-=" + 25},
+                                    onComplete: function () {
+                                        allowedToWalk = true;
+                                    }
+                                });
+                                ////console.log(walkright);
+                                walkdownBUF = walkdown;
+                                //////console.log("ANIMATING DOWN, wd = " + walkingDirection + " bufdir = " + bufDirection);
+                            }
+                        }
+                    }
+                }
+                if (gp.buttons[17]['pressed']) {
+                    if (can3dswitch) {
+                        if (!is3d) {
+                            libCube.camera.call3d(600, 60, 0, 0, 0, 0, 0);
+                            is3d = true;
+                            can3dswitch = false;
+                            var timedelay = setTimeout(function () {
+                                can3dswitch = true;
+                            }, 1000);
+                        } else {
+                            libCube.camera.call3d(0, 0, 0, 0, 0, 0, 0);
+                            is3d = false;
+                            can3dswitch = false;
+                            var timedelay = setTimeout(function () {
+                                can3dswitch = true;
+                            }, 1000);
+                        }
+                    }
+                }
+            } else {
+                walkingDirection = "none";
+                ////console.log(walkleft + " " + walkright);
+                libCube.walkAnimation.stop();
+                player_moving = false;
+            }
+
+            gamesLoop = setTimeout(function() { gameLoop(i); },77);
+        }
+
+        var timeDelay = setTimeout(cutScene,3000);
+
+    });
+
+function cutScene() {
+    //Spawn Position
+    //translateX(-14px) translateY(-629px)
+
+    libCube.camera.call3d(600,60,0,0,0,0,0);
+    $("#map").css("transform","translateX(398px)");
+    //TweenLite.to("#map", 8, {css:{"transform": "translateX(-512px) translateY(-860px)"}});
+    //TweenLite.to("#map", 5, {css:{"transform": "translateX(-621px) translateY(0px)"}, delay: 8});
+    TweenLite.to("#map", 6, {css:{"transform": "translateX(-164px) translateY(-660px)"}, onComplete: function() {  }});
+    var timeDelay = setTimeout(function() { libCube.camera.call3d(0,0,0,0,0,0,0); libCube.world.spawnStarCharacter("ash",cameraWidth,cameraHeight); }, 6000);
+}
+</script>
+</head>
+<body>
+<div id="camera-button" style="position: absolute;"><button id="call3d" style=" position: absolute;z-index: 999;top: 371px;" onClick="libCube.camera.call3d(600, 60, 0, 0, 0, 0, 0)">Switch to 3D Camera</button></div>
+<div id="fps_label" style="margin-top: 6px;
+  position: absolute;
+  z-index: 99;
+  font-family: monospace;"></div>
+</body>
+</html>

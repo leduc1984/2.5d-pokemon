@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="25" tileheight="25" nextobjectid="14">
+ <tileset firstgid="1" name="firered_terrain" tilewidth="25" tileheight="25">
+  <image source="firered_terrain.png" width="250" height="250"/>
+ </tileset>
+ <tileset firstgid="101" name="Buildings" tilewidth="25" tileheight="25">
+  <image source="buildings.png" width="1500" height="375"/>
+ </tileset>
+ <layer name="Ground" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzFmNmy2zAMQ+3urbvdtu7e/v9nVn7wjIocQFKu4zxwEjuyRRAkSGWZpmkpNle2wL36/iJr9u9rZXP1qe/r3S+Z+rHvW/tU31Of6X1pr3n6H9sS9kux0veucF9juE6X8SVcC9xX/2fZc50usah/bt/ES4s/eq/uQdf6jhZ3FFPlk3ii9S18+hvFjHIk5TZdE3fEL60nv18Ve91hbwST5vD2/XmxFwfZy0Z8lbdPxT532BfBQDXxodjHg+xB+FCtUl9GcCTNuhUO0hGqmREcLc06GofqiavpdRBHyqvNfhT7eaURDtJk0otRHKlfq8ao3qR+SVw+yHrXi/Y1v4v96bC/8Dzh0v5HfZ1yg3BoD079MvUK7YcUf8VCfVLfpzq6GBzJD9eHCA/lC81tGusezPpcK68oNrVPacYhfE57nR6nnKr3dzhUEymHdL80f5B/PfNqer7myOFwOeTuuz3d/u6Z1gzm8Lk6d/FpxTRdkwa4NS4Oql+7jfCx2ZGz3Oic53ShlVeE5cjZoXfOcxhaOFxPOhuH00OqrcQH9fIzcTjfFUOqD+LyHjjIqJekuWSGz7NwbDaiCz183gvHY/mk3nYPHNeeRTb7NV3WeZorz6gPOjeQUR05zT5bd925IemX6pTqw734SDO1m19oLkz95tZ1qqZ43ByneFrz8Rl5lfDQ2Yj8bvX/M/nQ+Kd5Vuuh1TdvjaP2XTWHcGn83fng7LzSmFNsEy/KjTsH3xJH0qeWbrnesv/+mP/8RvuxO/MqT3Qubelyio3WlvLt5jaaw6kGnhR72rBnBpvmpWoz9c2e/NR6pflDsb0t9q5h78EfmhOTuXmI9Jtm6cTHOoDDzV5JG1xeupx1daf4yHpxpLqgXNf87pk9HTfEkXJ7DR/Jf8eFi3HKOccjPXNNfdCMpb6mmnZ+uvpxulZfj+Coc6KVy1QLLg7kV89cUV+P1IeeOUhLKM5UMzTrUP1ofTjMX4t9a9j3wPPIbJB6gpvdNFYuDk7zUq725JBbo5w6f7VmXI1TL6B6Vf9cbqcYuJ6jeJIOprp0+u70xsXW9fjUL5Lmao1THBIXyjmt1RwkLXL8tNZpjpFvqjOpDjS2VKu7/QM/fXMC
+  </data>
+ </layer>
+ <layer name="Tree_2_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8sNgkAARdGZMlApy18BApajYAGKlsWvE+/OxOVsJiT3JHf/Xgj6d6GKamromndOsie9qKc3ffLOSTbQSBPNtGRdk66IIWxoSzsqY+5FafbsPtCRTnRe6Y8bu+/UUkePlf6QJEmSJEmSJEmSJEnSzxc2Cg62
+  </data>
+ </layer>
+ <layer name="Tree_3_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8sRgkAABNElDEHDAjQAEcLhF4CoYSmaiR3DXhaq+lX1fSYESZIkbcmVGrpRS13aOdHutNCDnvRKOyfamz600pd+SdfEO2Qh5FTQkU5Z6kVxSnZXVNOZLjv90bN7oJEmmnf6Q5IkSZIkSZIkaWv+e6wOtg==
+  </data>
+ </layer>
+ <layer name="Tree_4_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8ENgkAABdGlDETKEqEARcsRpQBAy1KhE6eGPbjZZF4y9/9DkCRJ0r+c6Ew9Xeiadk60iWZa6EmvtHOivelDX1ppS7omXlmEsKOK9lQXqRfFObC7oSO11GX648buge70oDHTH5IkSZIkSZIkSTn6AY0+DrY=
+  </data>
+ </layer>
+ <layer name="Tree_5_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8sNgkAARdGZMlApy18BApajYAGKlsWvE+/OxOVsJiT3JHf/XgiSJEmSJEnSz4Uqqqmha945yZ70op7e9Mk7J9lAI00005J1TboihrChLe2ojLkXpdmz+0BHOtF5pT9u7L5TSx09VvpDkiRJkiTp3xeGeg62
+  </data>
+ </layer>
+ <layer name="Tree_6_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz9sNgkAABdHdMlApy1cBCpajYAGKloVAJ04NG5INZE4y//eGIEmSJEmSJGkOF7pSRTXd8s5J9qI3dfShb945yXr60UAjTVnXpCtiCBva0o7KmHtRmj27D3SkE50X+uPO7gc11NJzoT8kSZIkSVqrP14ADrY=
+  </data>
+ </layer>
+ <layer name="Tree_7_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz9sNgkAABdHdMlApy1cBCpajYAGKloVAJ04NG5INZE4y//eGIEmSNI8LXamimm555yR70Zs6+tA375xkPf1ooJGmrGvSFTGEDW1pR2XMvSjNnt0HOtKJzgv9cWf3gxpq6bnQH5IkSZIkSZIkSVqnP1SxDrY=
+  </data>
+ </layer>
+ <layer name="Tree_8_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz9sNgkAABdHdMlApy1cBCpajYAGKloVAJ04NG5INZE4y//eGsB4XulJFNd3yzkn2ojd19KFv3jnJevrRQCNNWdekK2IIG9rSjsqYe1GaPbsPdKQTnRf6487uBzXU0nOhPyRJkiRJkiRJkiRJkjS/P1kuDrY=
+  </data>
+ </layer>
+ <layer name="Flower_1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAMAiCb2L+lIXbsgQQkAEC/AwAAAAAAAADA2QAHTAAg
+  </data>
+ </layer>
+ <layer name="Flower_2" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6A3sX9LY1w3SEACAHDXtAMAAAAAAAAAvLHVWQAg
+  </data>
+ </layer>
+ <layer name="Flower_3" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7A5wb9LHCx8PK2CJgAA0M13AAAAAAAAAOBgAaXhACA=
+  </data>
+ </layer>
+ <layer name="Flower_4" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgEJAAAMA6A1ef+WjzEGmsAEAACg79oBAAAAAAAA5j1bSQAg
+  </data>
+ </layer>
+ <layer name="Flower_5" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6A3sX9LW9zNQQISAADgo7kOAAAAAAAAQNkCcJkAIA==
+  </data>
+ </layer>
+ <layer name="Flower_6" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6A3sX9LY1w3SEACAADww7QDAAAAAAAAnLZW7QAg
+  </data>
+ </layer>
+ <layer name="Flower_7" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7A5wb9LTCzhoFXQBAAA+GiuAwAAAAAAAFC2bLkAIA==
+  </data>
+ </layer>
+ <layer name="Flower_8" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6A3sX9LW9zNQQISAADomesAAAAAAAAA8NYCnK0AIA==
+  </data>
+ </layer>
+ <layer name="Flower_9" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6A3sX9LW9zNQQISAICf5joAAAAAAAAAQNUCzhUAIA==
+  </data>
+ </layer>
+ <layer name="Flower_10" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAIA6A1sX9LU+x8CAlIAICWuQ4AAAAAAAAAwCML/JUAIA==
+  </data>
+ </layer>
+ <layer name="Flower_11" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzgEJAAAMA6A1ef+WjzEYmsAEALquHQAAAAAAAAAAJjwXSAAg
+  </data>
+ </layer>
+ <layer name="gym_1_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8kNwjAABVG7EtauEpauWMI9EOgqAVIG00KsSMbSPGnu/4cgSZIkSZIkSdL/aelOD+roSa+si9L0NNCbPvSlMeuiNIsYwpJWtKYNbWPuVdNVbK5pR3s60LHAHyc2n+lCV2roVuAPSZIkSZrbD4pMEAA=
+  </data>
+ </layer>
+ <layer name="building_2_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8kRgkAARNEhGYS0UNNiScAlLZcc7AA4wWEK672qf+8uBQAAAP7LLd3TIz0rb9njld7pk76Vt+zRNqWcUpf6pvaa7YZsP6dLuh74x5jtU5rTcuAfAAAAAABrflHvCyM=
+  </data>
+ </layer>
+ <layer name="building_1_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAADg3wAnEAAB
+  </data>
+ </layer>
+ <layer name="building_3_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz8sNg0AAQ8Hdevi0RaCtAO1BqADXQA5opRnp3e1SAAAAgFYc6Uy/dL285R9dLaVPQxrr22uem7L9k+a0NPzjm+1r2tLe8A8AAAAAgBtrSwi1
+  </data>
+ </layer>
+ <layer name="building_4_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz7ERgkAYBeH/OlK0LBTLEqEAVMoCNHRD4ktuztlvZvP3IiRJkiRJ0t5ET3rRm+ayc7IttNJGH/qWnZPtkCKO1NCJzqn0ojwtuy90pY5ulf64s7unBw00VvpDkiRJkiRJ0n/6AePuDvI=
+  </data>
+ </layer>
+ <layer name="building_5_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz9ENRFAARNH3mrK0xWoL294iMTXwIeSc5P7PlAIAAAAAAO/yT2va0n7zliuaWsontamrd685r8/2IX3T+OAfU7bPaUm/B/8AAAB4swPzAAll
+  </data>
+ </layer>
+ <layer name="building_6_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz80RgjAYBmECdsWPdIUKXSnIXUC70rUE9JDJzD6Tzfn9skySJEmSJEmSJEmS9I8HLbTSRk96RV30m/f3CzzKqaBDiL1qv5LNFdXU0JHaBO/o2HyiM12opyHBO65svtFIE91pTvAOSVIaPprwDk0=
+  </data>
+ </layer>
+ <layer name="mart2_collide" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztz9ENRFAARNGnKUtbrLaw7S0SU4OXEMk5yf2fKQUAAKjxT1va0/HwlhptU8ondalvnl5z3ZDtY/qm6cU/5mxf0pp+L/4BAAAAAABwpxNvEgll
+  </data>
+ </layer>
+ <layer name="3D_LAYER" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztwQEJAAAAAqDO9v9COwK1AQAAAAAAAAAAgH8DkUEAZg==
+  </data>
+ </layer>
+</map>
