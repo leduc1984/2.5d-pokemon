@@ -1,5 +1,7 @@
 # libCube #
 
+[![Join the chat at https://gitter.im/leduc1984/2.5d-pokemon](https://badges.gitter.im/leduc1984/2.5d-pokemon.svg)](https://gitter.im/leduc1984/2.5d-pokemon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 View Project:
 [Live Demo](http://cubepokemon.aerobatic.io/) 
 
