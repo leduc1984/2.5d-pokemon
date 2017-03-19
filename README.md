@@ -1,4 +1,6 @@
 # libCube #
+demo
+http://leduc1984.github.io/2.5d-pokemon/
 
 ### README ###
 
