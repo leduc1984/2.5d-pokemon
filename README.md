@@ -1,15 +1,28 @@
-# libCube #
-demo
-http://leduc1984.github.io/2.5d-pokemon/
+# Monero Mine
 
-### README ###
+Monero (XMR) mining app, built with Vue.js and hashes visualized with D3
+- built as an experiment with CPU mining and for educational purposes only
 
-### What do I need to get started? ###
+> Turn off Ad blockers to view demo.
 
-* A webserver (i.e nginx, apache, xampp) --or a browser with XHR cross-origin disabled
-* A modern web-browser
-* Tiled Map Editor (www.mapeditor.org)
+[Try Demo](https://bradoyler.github.io/xmr-miner/)
 
+![xmr](https://user-images.githubusercontent.com/425966/34000771-2b14fe04-e0bc-11e7-99cc-85767d7e8f6a.gif)
 
+Uses the [Coinhive Javascript Miner](https://coinhive.com/documentation/miner) 
+## Build Setup
 
+``` bash
+# install dependencies
+npm install
 
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+```
+
+> Built using $ vue-cli webpack-simple
+
+Author not affiliated with CoinHive
