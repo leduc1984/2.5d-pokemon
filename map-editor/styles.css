@@ -1,0 +1,23 @@
+.tile-selector {
+    /* Styles pour le sélecteur de tuiles */
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.tile-selector img {
+    /* Style pour les images de tuiles */
+    width: 50px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.map-canvas {
+    /* Styles pour la zone de dessin de la carte */
+    width: 100%;
+    height: 500px;
+    border: 1px solid #000;
+    position: relative;
+}
