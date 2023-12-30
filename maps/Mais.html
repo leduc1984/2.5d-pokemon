@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Éditeur de Tuiles</title>
+    <!-- Ajoutez votre CSS ici -->
+</head>
+<body>
+    <h2>Images Existantes</h2>
+    <div id="existingImages"></div>
+
+    <h2>Ajouter une Nouvelle Image</h2>
+    <input type="file" id="fileInput" />
+    <button id="addTileButton">Ajouter comme Tuile</button>
+    <div id="preview"></div>
+
+    <script>
+        // Afficher les images existantes
+        const images = [
+            "https://raw.githubusercontent.com/leduc1984/2.5d-pokemon/master/maps/buildings.png",
+            "https://raw.githubusercontent.com/leduc1984/2.5d-pokemon/master/maps/buildings_masked.png",
+            // Ajoutez d'autres URLs d'images ici
+        ];
+
+        const existingImagesDiv = document.getElementById('existingImages');
+        images.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            existingImagesDiv.appendChild(img);
+        });
+
+        // Ajouter de nouvelles images
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+                document.getElementById('preview').appendChild(img);
+                // Ajouter d'autres manipulations d'image ici
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('addTileButton').addEventListener('click', function() {
+            // Logique pour enregistrer l'image en tant que tuile
+        });
+    </script>
+</body>
+</html>
