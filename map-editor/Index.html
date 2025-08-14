@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Éditeur de Cartes 2.5D Pokémon</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Éditeur de Cartes 2.5D</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="tileSelector" class="tile-selector"></div>
-    <div id="mapCanvas" class="map-canvas"></div>
-    <script src="script.js"></script>
+    <div class="editor-container">
+        <div id="left-sidebar" class="sidebar">
+            <div id="tools-panel">
+                <h3>Tools</h3>
+                <button id="save-btn">Save Map</button>
+                <input type="file" id="load-input" accept=".map" style="display: none;">
+                <button id="load-btn">Load Map</button>
+            </div>
+            <div id="objects-panel">
+                <h3>Map Objects</h3>
+                <div id="object-list">
+                    <!-- Object previews will go here -->
+                </div>
+            </div>
+        </div>
+        <div id="map-canvas-container">
+            <canvas id="map-canvas"></canvas>
+        </div>
+        <div id="right-sidebar" class="sidebar">
+            <div id="inspector-panel">
+                <h3>Inspector</h3>
+                <!-- Inspector content will go here -->
+            </div>
+        </div>
+    </div>
+    <script src="Script.js"></script>
 </body>
 </html>
