@@ -1,23 +1,112 @@
-.tile-selector {
-    /* Styles pour le sélecteur de tuiles */
+body, html {
+    margin: 0;
+    padding: 0;
     width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    border: 1px solid #ccc;
-    padding: 10px;
+    height: 100%;
+    font-family: sans-serif;
+    overflow: hidden;
+    background-color: #333;
+    color: #fff;
 }
 
-.tile-selector img {
-    /* Style pour les images de tuiles */
-    width: 50px;
-    margin-right: 10px;
+.editor-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2a2a2a;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+#left-sidebar {
+    border-right: 1px solid #444;
+}
+
+#right-sidebar {
+    border-left: 1px solid #444;
+}
+
+#map-canvas-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e1e1e;
+}
+
+#map-canvas {
+    background-color: #fff;
+    border: 1px solid #555;
+}
+
+h3 {
+    color: #eee;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+}
+
+#object-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 10px;
+}
+
+.palette-object {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background-color: #444;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.palette-object:hover {
+    border-color: #777;
+}
+
+.palette-object.selected {
+    border-color: #00aaff;
+    background-color: #555;
+}
+
+#inspector-panel p {
+    margin: 10px 0;
+}
+
+#delete-object-btn {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#delete-object-btn:hover {
+    background-color: #e74c3c;
+}
+
+#tools-panel button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #444;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-.map-canvas {
-    /* Styles pour la zone de dessin de la carte */
-    width: 100%;
-    height: 500px;
-    border: 1px solid #000;
-    position: relative;
+#tools-panel button:hover {
+    background-color: #555;
 }
